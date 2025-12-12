@@ -1,3 +1,5 @@
+const authRouter = require('../module/auth/auth.router');
+
 const router = require('express').Router();
 
 
@@ -11,7 +13,7 @@ router.get('/health', (req, res, next)=>{
 
 
 // router mounting for any other modules
-
+router.use("/auth", authRouter);
 
 
 

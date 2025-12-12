@@ -4,6 +4,7 @@
   "description": "API for e-commerce website using express.js MongoDb and postgreSQL",
   "main": "index.js",
   "scripts": {
+    "watch": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +19,11 @@
   },
   "homepage": "https://github.com/Kashaam/e-commerce-api#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "cloudinary": "^2.8.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.11",
+    "nodemon": "^3.1.11"
   }
 }
