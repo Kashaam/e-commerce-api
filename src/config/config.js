@@ -18,7 +18,8 @@ DbConfig = {
 const AppConfig = {
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_secret: process.env.CLOUDINARY_API_SECRET,
-    api_key: process.env.CLOUDINARY_API_KEY
+    api_key: process.env.CLOUDINARY_API_KEY,
+    jwt_secret: process.env.JWT_SECRET
 }
 
 module.exports = {

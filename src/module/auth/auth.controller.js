@@ -1,8 +1,10 @@
 const { AppConfig } = require("../../config/config");
 const { Status } = require("../../config/constant.config");
+const { randomStringGenerator } = require("../../utilities/helper");
 const userSvc = require("../user/user.service");
 const authSvc = require("./auth.service");
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 class AuthController {
     register = async(req, res, next)=>{
@@ -79,10 +81,52 @@ class AuthController {
                 })
             };
 
-            // const refreshToken= jwt.sign({
-            //     typ: "Refresh",
-            //     sub: userDetail._id
-            // }, )
+            if( userDetail.status !== Status.ACTIVE || userDetail.activationToken !== null){
+                throw({
+                    code: 422,
+                    message: "User not activated yet",
+                    status: "USER_NOT_ACTIVATED_YET"
+                })
+            }
+
+            const refreshToken= jwt.sign({
+                typ: "Refresh",
+                sub: userDetail._id
+            }, AppConfig.jwt_secret, {
+                expiresIn: "3d"
+            } );
+
+
+            const accessToken = jwt.sign({
+                typ: "Bearer",
+                sub: userDetail._id
+            }, AppConfig.jwt_secret, {
+                expiresIn: "3h"
+            });
+
+            const maskedRefreshToken = randomStringGenerator(150);
+            const maskedAccessToken = randomStringGenerator(150);
+
+            const authData = {
+                user: userDetail._id,
+                maskedRefreshToken: maskedRefreshToken,
+                maskedAccessToken: maskedAccessToken,
+                refreshToken: refreshToken,
+                accessToken: accessToken
+            };
+
+
+            await authSvc.createAuthData(authData);
+
+            res.json({
+                data: {
+                    refreshToken: maskedRefreshToken,
+                    accessToken: maskedAccessToken
+                },
+                message: `Welcome to ${userDetail.role} portal`,
+                status: "USER_LOGGED_IN_SUCCESS",
+                options: null
+            })
            
         }catch(exception){
             next(exception);

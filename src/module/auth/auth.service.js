@@ -1,9 +1,10 @@
 const { Status } = require("../../config/constant.config");
 const mailSvc = require("../../services/mail.service");
 const bcrypt = require("bcryptjs");
-const randomStringGenerator = require("../../utilities/helper");
+const { randomStringGenerator } = require("../../utilities/helper");
 const userModel = require("../user/user.model");
 const cloudinarySvc = require("../../services/cloudinary.service");
+const authModel = require("./auth.model");
 
 class AuthService {
   createTransformUser = async (req) => {
@@ -159,6 +160,15 @@ class AuthService {
       </body>
     </html>`,
       });
+    } catch (exception) {
+      throw exception;
+    }
+  };
+
+  createAuthData = async (data) => {
+    try {
+      const response = authModel(data);
+      return await response.save();
     } catch (exception) {
       throw exception;
     }

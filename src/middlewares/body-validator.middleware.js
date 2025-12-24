@@ -14,12 +14,13 @@ const bodyValidator = (schema) =>{
             await schema.validateAsync(data, {abortEarly: false});
             next();
         }catch(exception){
-            console.log(exception);
             let messageBag = {};
-            exception.details.map((err)=>{
-                key = err.path.pop();
+            if(exception.details && Array.isArray(exception.details)){
+                exception.details.map((err)=>{
+                let key = err.path.pop();
                 messageBag[key] = err.message;
             })
+            }
             next({
                 code: 422,
                 message: "Validation error",

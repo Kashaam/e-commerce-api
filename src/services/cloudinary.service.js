@@ -1,4 +1,5 @@
 const { AppConfig } = require('../config/config');
+const { deleteFile } = require('../utilities/helper');
 const cloudinary = require('cloudinary').v2;
 
 
@@ -21,6 +22,7 @@ class CloudinaryService {
                 resource_type: "auto"
             });
 
+            deleteFile(filepath);
 
             const optimized_url = cloudinary.url(public_id, {
                 transformation: [
@@ -28,13 +30,14 @@ class CloudinaryService {
                     {quality: "auto", fetch_format: "auto"}
                 ]
             })
+
+
             return {
                 publicId: public_id,
                 secureUrl: secure_url,
                 optimizedUrl: optimized_url
             }
         }catch(exception){
-            console.log("Exception in cloudinary..",exception)
             throw{
                 code: 500,
                 message: "File upload error in cloudinary..",
