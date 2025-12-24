@@ -10,7 +10,19 @@ const MailConfig = {
 };
 
 
+DbConfig = {
+    dbUrl: process.env.MONGODB_URL,
+    dbName: process.env.DB_NAME
+}
+
+const AppConfig = {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    api_key: process.env.CLOUDINARY_API_KEY
+}
 
 module.exports = {
-    MailConfig
+    MailConfig,
+    DbConfig,
+    AppConfig
 }

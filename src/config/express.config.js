@@ -12,4 +12,21 @@ app.use(express.urlencoded());
 app.use('/api/v1', router);
 
 
+
+
+app.use((err, req, next)=>{
+    let code = err.code || 500;
+    let message= err.message || "Internal server error........";
+    let status = err.status || "SERVER_ERROR.......";
+    let detail = err.detail || null;
+
+
+    res.status(code).json({
+        error: detail,
+        message: message,
+        status: status,
+        options: null
+    })
+})
+
 module.exports = app;

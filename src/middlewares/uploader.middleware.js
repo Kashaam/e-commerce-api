@@ -24,7 +24,7 @@ const uploader = (type = "image")=>{
     const uploadConfig = {
         fileSize: 3000000,
         fileFilter: function(req, file, cb){
-            let allowedExt = ["jpeg", "png", "gif", "img"];
+            let allowedExt = ["jpg", "jpeg", "png", "gif", "svg", "bmp", "webp"];
             if(type === "doc"){
                 this.fileSize = 5000000;
                 allowedExt = ["doc", "pdf", "docx", "csv", "json"]
@@ -33,7 +33,7 @@ const uploader = (type = "image")=>{
                 allowedExt = ["m3u8", "mp3"];
             }
 
-            let ext = file.originalname.split('.').pop();
+            const ext = file.originalname.split('.').pop();
             if(allowedExt.includes(ext.toLowerCase())){
                 cb(null, true);
             } else{
