@@ -1,6 +1,8 @@
 const express = require('express');
 const router = require('./router.config');
 
+require('./mongodb.config');
+
 const app = express();
 // add parser 
 app.use(express.json({
@@ -19,6 +21,8 @@ app.use((err, req, next)=>{
     let message= err.message || "Internal server error........";
     let status = err.status || "SERVER_ERROR.......";
     let detail = err.detail || null;
+
+
 
 
     res.status(code).json({

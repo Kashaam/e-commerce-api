@@ -8,12 +8,12 @@ class AuthController {
     register = async(req, res, next)=>{
         try{
             const reqData = await authSvc.createTransformUser(req);
-            // const userData = await authSvc.createUser(reqData);
-            await authSvc.sendUserRegisterNotification(reqData);
+            const userData = await authSvc.createUser(reqData);
+            await authSvc.sendUserRegisterNotification(userData);
             res.json({
-                data: userSvc.publicUserProfile(reqData),
+                data: userSvc.publicUserProfile(userData),
                 message: "User registered successfully",
-                status: "USER_REgISteReD_SUCCESS"
+                status: "USER_REGISTERED_SUCCESS"
             })
         }catch(exception){
             next(exception);
