@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Status, Roles } = require("../../config/constant.config");
+const { Status, Roles, Gender } = require("../../config/constant.config");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -30,7 +30,12 @@ const UserSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
+      enum: Object.values(Gender),
       default: null,
+    },
+    address: {
+      billingAddress: String,
+      shippingAddress: String
     },
     image: {
       publicId: String,
@@ -38,7 +43,19 @@ const UserSchema = new mongoose.Schema(
       optimizedUrl: String
     },
     phone: [{ type: String, default: null }],
-    activationToken: String
+    activationToken: String,
+    forgetPasswordToken: String,
+    expiryTime: Date,
+    updatedBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+    createddBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
   },
   {
     autoCreate: true,
@@ -47,5 +64,5 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-const userModel = mongoose.model("Users", UserSchema);
+const userModel = mongoose.model("User", UserSchema);
 module.exports = userModel;

@@ -9,7 +9,15 @@ const Roles = {
     SELLER: "seller"
 }
 
+
+const Gender = {
+    MALE: "male",
+    FEMALE: "female",
+    OTHER: "other"
+}
+
 module.exports = {
     Status,
-    Roles
+    Roles,
+    Gender
 }

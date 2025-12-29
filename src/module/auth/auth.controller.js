@@ -133,6 +133,50 @@ class AuthController {
         }
     }
 
+    forgetPassword = async(req, res, next)=>{
+        try{
+            const {email} = req.body;
+            const userDetail = await userSvc.getSingleUserByFilter({
+                email: email
+            });
+
+            if(!userDetail){
+                throw({
+                    code: 422,
+                    detail: {
+                        email: "Email not registered yet"
+                    },
+                    message: "User not found or registered yet",
+                    status: "USER_NOT_FOUND_OR_REGISTERED"
+                })
+            };
+
+            const forgetPasswordData = {
+                forgetPasswordToken: randomStringGenerator(100),
+                expiryTime: new Date(Date.now() + 3 * 60 * 60 * 1000) //3 hours
+            }
+            const updateData = await userSvc.updateSingleUserByFilter({
+                _id: userDetail._id
+            }, forgetPasswordData);
+
+
+            // email notification
+            await authSvc.sendResetPasswordNotificationEmail(updateData);
+
+
+            res.json({
+                data: null,
+                message: "Password reset instruction sent to your email",
+                status: "PASSWORD_RESET_INSTRUCTION_SENT",
+                options: null   
+            });
+
+        }catch(exception){
+            console.log(exception);
+            next(exception);
+        }
+    }
+
 }
 
 const authCtrl = new AuthController();
