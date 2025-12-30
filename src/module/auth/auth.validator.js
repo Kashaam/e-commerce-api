@@ -41,9 +41,23 @@ const ResetPasswordRequestDTO = Joi.object({
   email: EmailDTO,
 });
 
+const ResetPasswordDTO = Joi.object({
+  password: Joi.string()
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&+<>?*`@]).{8,25}/)
+    .required()
+    .messages({
+      "string.pattern.base":
+        "Password must be 8-25 characters long, include at least one uppercase letter, one lowercase letter, one number and one special character",
+    }),
+  confirmPassword: Joi.string().equal(Joi.ref("password")).required().messages({
+    "any.only": "Confirm password does not matched with password",
+  }) 
+});
+
 module.exports = {
   RegisterDTO,
   EmailDTO,
   LoginDTO,
-  ResetPasswordRequestDTO
+  ResetPasswordRequestDTO,
+  ResetPasswordDTO
 };

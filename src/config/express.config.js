@@ -16,7 +16,7 @@ app.use('/api/v1', router);
 
 
 
-app.use((err, req, next)=>{
+app.use((err, req, res, next)=>{
     let code = err.code || 500;
     let message= err.message || "Internal server error........";
     let status = err.status || "SERVER_ERROR.......";

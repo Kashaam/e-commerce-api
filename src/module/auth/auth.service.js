@@ -5,6 +5,7 @@ const { randomStringGenerator } = require("../../utilities/helper");
 const userModel = require("../user/user.model");
 const cloudinarySvc = require("../../services/cloudinary.service");
 const authModel = require("./auth.model");
+const userSvc = require("../user/user.service");
 
 class AuthService {
   createTransformUser = async (req) => {
@@ -33,7 +34,6 @@ class AuthService {
       const response = new userModel(data);
       return await response.save();
     } catch (exception) {
-      console.log("Exception in createUser auth service..", exception);
       throw exception;
     }
   };
@@ -174,9 +174,8 @@ class AuthService {
     }
   };
 
-
-  sendResetPasswordNotificationEmail = async(user)=>{
-    try{
+  sendResetPasswordNotificationEmail = async (user) => {
+    try {
       await mailSvc.sendEmail({
         to: user.email,
         subject: "Password reset request",
@@ -194,7 +193,9 @@ class AuthService {
         </tr>
         <tr>
           <td style="padding:24px;color:#333333;font-size:15px;line-height:1.6;">
-            <p style="margin:0 0 12px 0;">Hello ${user.name || user.email || "User"},</p>
+            <p style="margin:0 0 12px 0;">Hello ${
+              user.name || user.email || "User"
+            },</p>
             <p style="margin:0 0 12px 0;">
           We received a request to reset the password for your account. Use the token below or click the button to proceed. For security reasons, this link will expire shortly.
             </p>
@@ -208,7 +209,9 @@ class AuthService {
             <div style="margin:18px 0;text-align:center;">
           <a href="${
             user.resetLink ||
-            `${process.env.FRONTEND_URL || "https://example.com"}/reset-password/${user.forgetPasswordToken || ""}`
+            `${
+              process.env.FRONTEND_URL || "https://example.com"
+            }/reset-password/${user.forgetPasswordToken || ""}`
           }" style="display:inline-block;padding:12px 20px;background:#0b74de;color:#ffffff;border-radius:6px;text-decoration:none;font-weight:600;">
             Reset your password
           </a>
@@ -233,8 +236,129 @@ class AuthService {
       </tr>
         </table>
       </body>
-    </html>`
+    </html>`,
+      });
+    } catch (exception) {
+      throw exception;
+    }
+  };
+
+  verifyForgetPasswordToken = async (token) => {
+    try {
+      const userData = await userSvc.getSingleUserByFilter({
+        forgetPasswordToken: token,
+      });
+
+      if (!token) {
+        throw {
+          code: 400,
+          message: "Token not found",
+          status: "TOKEN_NOT_FOUND",
+        };
+      }
+
+      const currentTime = Date.now();
+      if (userData.expiryTime.getTime() < currentTime) {
+        throw {
+          code: 401,
+          message: "Token expired",
+          status: "TOKEN_EXPIRED",
+        };
+      }
+
+      return userData;
+    } catch (exception) {
+      throw exception;
+    }
+  };
+
+
+  logOutFromAll = async(filter)=>{
+    try{
+      const response = await userModel.deleteMany(user);
+      return response;
+    }catch(exception){
+      throw exception;
+    }
+  }
+
+  sendSuccessfulPasswordResetEmail = async(user)=>{
+    try{
+      await mailSvc.sendEmail({
+        to: user.email,
+        subject: "Your password has been reset successfully",
+        msg: ``
+      `<!doctype html>
+      <html>
+        <body style="margin:0;padding:0;font-family:Arial, sans-serif;background-color:#f4f6f8;">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;margin:40px 0;border-radius:8px;overflow:hidden;">
+                  <tr>
+                    <td style="padding:22px;text-align:center;background:#0b74de;color:#ffffff;font-size:20px;font-weight:700;">
+                      Password Reset Successful
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:24px;color:#333333;font-size:16px;line-height:1.5;">
+                      Hello ${user.name || user.email || "User"},<br/><br/>
+                      Your password has been successfully reset. You can now sign in to your account with your new password.
+                      <div style="text-align:center;margin:24px 0;">
+                        <a href="${user.loginLink || `${process.env.FRONTEND_URL || "http://127.0.0.1:7000/api/v1/auth/login"}/login`}" style="display:inline-block;padding:12px 20px;background:#0b74de;color:#ffffff;border-radius:6px;text-decoration:none;font-weight:600;">
+                          Sign in to your account
+                        </a>
+                      </div>
+                      <p style="color:#6b7280;font-size:13px;margin-top:20px;">
+                        If you did not request this password reset, please contact our support team immediately.
+                      </p>
+                      <p style="color:#6b7280;font-size:13px;margin-top:6px;">
+                        Regards,<br/>The Team
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:14px;text-align:center;font-size:12px;color:#9ca3af;background:#f8fafc;">
+                      This is an automated message — please do not reply.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+      </html>`
       })
+    }catch(exception){
+      throw exception;
+    }
+  }
+
+  getSingleRowByFilter = async(filter) =>{
+    try{
+      const response = await authModel.findOne(filter);
+      return response;
+    }catch(exception){
+      throw exception;
+    }
+  }
+
+  logOutUser = async(token)=>{
+    try{
+      const accessToken = token.replace("Bearer ", "");
+      const authData = await this.getSingleRowByFilter({
+        maskedAccessToken: accessToken
+      })
+
+      if(!authData){
+        throw{
+          code: 402,
+          message: "Token Not Found",
+          status: "TOKEN_NOT_FOUND"
+        }
+      }
+      const authDelete = await authModel.findOneAndDelete({maskedAccessToken: accessToken});
+      return authDelete;
     }catch(exception){
       throw exception;
     }
