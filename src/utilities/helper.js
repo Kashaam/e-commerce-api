@@ -5,8 +5,8 @@ const randomStringGenerator = (length = 100) => {
   const len = char.length;
   let result = "";
 
-  for (let i = 1; i <= len; i++) {
-    let pos = Math.ceil(Math.random() * (len - 1));
+  for (let i = 0; i < length; i++) {
+    let pos = Math.ceil(Math.random() * len-1 );
     result += char[pos];
   }
   return result;

@@ -2,7 +2,7 @@ const auth = require("../../middlewares/auth.middleware");
 const bodyValidator = require("../../middlewares/body-validator.middleware");
 const uploader = require("../../middlewares/uploader.middleware");
 const authCtrl = require("./auth.controller");
-const { RegisterDTO, LoginDTO, ResetPasswordRequestDTO, ResetPasswordDTO } = require("./auth.validator");
+const { RegisterDTO, LoginDTO, ResetPasswordRequestDTO, ResetPasswordDTO, UpdateUserDTO } = require("./auth.validator");
 
 
 const authRouter = require("express").Router();
@@ -14,6 +14,8 @@ authRouter.get("/log-out", auth(), authCtrl.logOut);
 
 authRouter.get('/me', auth(), authCtrl.me);
 // authRouter.get('/me', auth(["admin"]), authCtrl.me);
+
+authRouter.put('/update/:id', auth(["admin"]), bodyValidator(UpdateUserDTO), authCtrl.updateUser)
 
 // forget password
 authRouter.post('/forget-password', bodyValidator(ResetPasswordRequestDTO), authCtrl.forgetPassword);

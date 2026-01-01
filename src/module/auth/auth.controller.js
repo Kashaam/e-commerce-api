@@ -191,7 +191,7 @@ class AuthController {
       const token = req.params.token;
       const data = await authSvc.verifyForgetPasswordToken(token);
       res.json({
-        data: null,
+        data: token,
         message: "Token verified successfully, you can reset your password now",
         status: "TOKEN_VERIFIED_SUCCESS",
         options: null,
@@ -225,7 +225,7 @@ class AuthController {
         user: userDetail._id,
       });
 
-      await authSvc.sendSuccessfulPasswordResetEmail(updateUser);
+      await authSvc.sendSuccessfulPasswordResetEmail(userDetail);
 
       res.json({
         data: null,
@@ -243,25 +243,45 @@ class AuthController {
       res.json({
         data: null,
         message: "User logged Out successfully",
-        status: "USER_LOGGED_OUT_SUCCESSFULLY"
+        status: "USER_LOGGED_OUT_SUCCESSFULLY",
       });
     } catch (exception) {
       next(exception);
     }
   };
 
-  me = async(req, res, next)=>{
-    try{
+  me = async (req, res, next) => {
+    try {
       const user = req.loggedInUser;
       res.json({
         data: user,
         message: "logged In User detail fetched",
-        status: "LOGGED_IN_USER_FETCHED"
-      })
-    }catch(exception){
-      next(exception)
+        status: "LOGGED_IN_USER_FETCHED",
+      });
+    } catch (exception) {
+      next(exception);
     }
-  }
+  };
+
+  updateUser = async (req, res, next) => {
+    try {
+      const userId = req.params.id;
+      const data = req.body;
+      const updatedUser = await userSvc.updateSingleUserByFilter(
+        { _id: userId },
+        data
+      );
+      res.json({
+        data: updatedUser,
+        message: "User updated successfully",
+        status: "USER_UPDATED_SUCCESSFULLY",
+        options: null,
+      });
+    } catch (exception) {
+      console.log("Exception: ", exception);
+      next(exception);
+    }
+  };
 }
 
 const authCtrl = new AuthController();

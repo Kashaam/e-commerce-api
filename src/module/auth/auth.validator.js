@@ -41,6 +41,25 @@ const ResetPasswordRequestDTO = Joi.object({
   email: EmailDTO,
 });
 
+const UpdateUserDTO = Joi.object({
+  name: Joi.string().min(2).max(50).required(),
+  gender: Joi.string()
+    .regex(/^male|female|other$/i)
+    .optional(),
+  address: Joi.object({
+    billingAddress: Joi.string().max(100),
+    shippingAddress: Joi.string().max(100),
+  })
+    .allow(null, "")
+    .default(null),
+  phone: Joi.string()
+    .regex(/^(?:\+?977[-\s]?|0)?(?:9\d{9}|1\d{7}|[2-7]\d{6,7})$/)
+    .allow(null, "")
+    .default(null),
+  image: Joi.string().allow(null, "").optional().default(null),
+  role: Joi.string().regex(/^admin|customer|seller$/i),
+});
+
 const ResetPasswordDTO = Joi.object({
   password: Joi.string()
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&+<>?*`@]).{8,25}/)
@@ -54,10 +73,13 @@ const ResetPasswordDTO = Joi.object({
   }) 
 });
 
+
 module.exports = {
   RegisterDTO,
   EmailDTO,
   LoginDTO,
   ResetPasswordRequestDTO,
-  ResetPasswordDTO
+  ResetPasswordDTO,
+  UpdateUserDTO
 };
+

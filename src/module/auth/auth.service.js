@@ -211,7 +211,7 @@ class AuthService {
             user.resetLink ||
             `${
               process.env.FRONTEND_URL || "https://example.com"
-            }/reset-password/${user.forgetPasswordToken || ""}`
+            }/reset-password/:token${user.forgetPasswordToken || ""}`
           }" style="display:inline-block;padding:12px 20px;background:#0b74de;color:#ffffff;border-radius:6px;text-decoration:none;font-weight:600;">
             Reset your password
           </a>
@@ -275,7 +275,7 @@ class AuthService {
 
   logOutFromAll = async(filter)=>{
     try{
-      const response = await userModel.deleteMany(user);
+      const response = await userModel.deleteMany(filter);
       return response;
     }catch(exception){
       throw exception;
@@ -287,8 +287,7 @@ class AuthService {
       await mailSvc.sendEmail({
         to: user.email,
         subject: "Your password has been reset successfully",
-        msg: ``
-      `<!doctype html>
+        msg: `<!doctype html>
       <html>
         <body style="margin:0;padding:0;font-family:Arial, sans-serif;background-color:#f4f6f8;">
           <table width="100%" cellpadding="0" cellspacing="0">
@@ -305,7 +304,7 @@ class AuthService {
                       Hello ${user.name || user.email || "User"},<br/><br/>
                       Your password has been successfully reset. You can now sign in to your account with your new password.
                       <div style="text-align:center;margin:24px 0;">
-                        <a href="${user.loginLink || `${process.env.FRONTEND_URL || "http://127.0.0.1:7000/api/v1/auth/login"}/login`}" style="display:inline-block;padding:12px 20px;background:#0b74de;color:#ffffff;border-radius:6px;text-decoration:none;font-weight:600;">
+                        <a href="${user.loginLink || `${process.env.FRONTEND_URL || "http://127.0.0.1:7000/api/v1/auth"}/login`}" style="display:inline-block;padding:12px 20px;background:#0b74de;color:#ffffff;border-radius:6px;text-decoration:none;font-weight:600;">
                           Sign in to your account
                         </a>
                       </div>
