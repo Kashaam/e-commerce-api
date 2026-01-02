@@ -17,32 +17,87 @@ class BrandController {
     }
   };
 
-  listBrand = async(req, res, next)=>{
-    try{
+  listBrand = async (req, res, next) => {
+    try {
       let filter = {};
-      if(req.query.search){
+      if (req.query.search) {
         filter = {
           ...filter,
-          name: new RegExp(req.query.search, "i")
-        }
+          name: new RegExp(req.query.search, "i"),
+        };
       }
 
-      if(req.query.status){
+      if (req.query.status) {
         filter = {
           ...filter,
-          status: req.query.status
-        }
+          status: req.query.status,
+        };
       }
 
-      const {data, pagination} = await brandSvc.listAllRowsByFilter(req.query, filter);
+      const { data, pagination } = await brandSvc.listAllRowsByFilter(
+        req.query,
+        filter
+      );
 
       res.json({
         data: data,
         message: "Brand list",
         status: "BRAND_LIST_FETCHED_SUCCESS",
-        options: pagination
+        options: pagination,
+      });
+    } catch (exception) {
+      next(exception);
+    }
+  };
+
+  getBrandByid = async (req, res, next) => {
+    try {
+      const brandData = await brandSvc.getSingleRowByFilter({
+        _id: req.params.brandId,
+      });
+
+      if (!brandData) {
+        throw {
+          code: 402,
+          message: "Brand not found ",
+          status: "BRAND_NOT_FOUND",
+          options: null,
+        };
+      }
+
+      res.json({
+        data: brandData,
+        message: "Brand Data fetched",
+        status: "BRAND_DATA_FETCHED",
+        options: null,
+      });
+    } catch (exception) {
+      next(exception);
+    }
+  };
+
+  async updateBrand(req, res, next) {
+    try {
+      const brand = await brandSvc.getSingleRowByFilter({_id: req.params.brandId});
+      if(!brand){
+        throw{
+          code: 402,
+          message: "Brand not found",
+          status: "BRAND_NOT_FOUND",
+          options: nul
+        }
+      }
+
+      const payload = await brandSvc.transformCreateBrand(req, brand);
+      const updatedData = await brandSvc.updateSingleRowByFilter({_id: brand._id}, payload);
+
+      res.json({
+        data: updatedData,
+        message: "Brand updated successfully",
+        status: "BRAND_UPDATED",
+        options: null
       })
-    }catch(exception){
+    } catch (exception) {
       next(exception);
     }
   }

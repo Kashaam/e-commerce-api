@@ -69,6 +69,8 @@ class BrandService extends BaseService {
       throw exception;
     }
   }
+
+  
 }
 
 const brandSvc = new BrandService(brandModel);

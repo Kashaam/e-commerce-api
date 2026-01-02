@@ -8,9 +8,14 @@ const BrandCreateDTO = Joi.object({
 
 });
 
-
+const UpdateBrandDTO = Joi.object({
+    name: Joi.string().min(2).max(100).required(),
+    logo: Joi.string().allow(null, "").default(null),
+    status: Joi.string().regex(/^(active|inactive)$/i).default(Status.INACTIVE),
+})
 
 
 module.exports = {
-    BrandCreateDTO
+    BrandCreateDTO,
+    UpdateBrandDTO
 }
