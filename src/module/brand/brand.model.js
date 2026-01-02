@@ -15,7 +15,7 @@ const BrandSchema = new mongoose.Schema({
     logo: {
         secureUrl: String,
         optimizedUrl: String,
-        publicUrl: String
+        publicId: String
     },
     status: {
         type: String,

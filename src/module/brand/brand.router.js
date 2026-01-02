@@ -8,6 +8,7 @@ const brandRouter = require("express").Router();
 
 brandRouter.route("/")
     .post(auth(["admin"]), uploader().single("logo"), bodyValidator(BrandCreateDTO), brandCtrl.createBrand)
+    .get(brandCtrl.listBrand)
 
 
 module.exports = brandRouter;
