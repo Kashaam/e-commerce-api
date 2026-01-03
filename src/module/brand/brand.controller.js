@@ -101,6 +101,31 @@ class BrandController {
       next(exception);
     }
   }
+
+ async removeBrandById(req, res, next){
+  try{
+    const brandData = brandSvc.deleteSingleRowByFilter({_id: req.params.brandId});
+
+    if(!brandData){
+      throw{
+        code: 402,
+        message: "Brand not found",
+        status: "BRAND_UNAVAILABLE",
+        options: null
+      }
+    }
+
+
+    res.json({
+      data: brandData,
+      message: "Brand deleted Successfully",
+      status: "BRAND_DELETED_SUCCESSFULLY",
+      options: null
+    })
+  }catch(exception){
+    next(exception);
+  }
+ }
 }
 
 const brandCtrl = new BrandController();

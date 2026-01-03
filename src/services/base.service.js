@@ -31,6 +31,15 @@ class BaseService {
         throw exception;
     }
   }
+
+  async deleteSingleRowByFilter(filter){
+    try{
+        const response = await this.model.findOneAndDelete(filter);
+        return response;
+    }catch(exception){
+        throw exception;
+    }
+  }
 }
 
 module.exports = BaseService;
