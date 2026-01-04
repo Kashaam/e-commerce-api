@@ -23,6 +23,21 @@ class BrandService extends BaseService {
     }
   };
 
+  transformUpdateBrand = async(req, oldData)=>{
+    try{
+      const data = req.data;
+      if(data.file){
+        data.logo = await cloudinarySvc.fileUpload(req.file.path, "/brand/")
+      }else{
+        data.logo = oldData.logo;
+      }
+
+      return data;
+    }catch(exception){
+      throw exception;
+    }
+  }
+
   publicBrandData(brand) {
     return {
       _id: brand._id,

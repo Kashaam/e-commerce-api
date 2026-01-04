@@ -3,7 +3,7 @@ const auth = require('../../middlewares/auth.middleware');
 const bodyValidator = require('../../middlewares/body-validator.middleware');
 const uploader = require('../../middlewares/uploader.middleware');
 const categoryCtrl = require('./category.controller');
-const { CategoryCreateDTO } = require('./category.validator');
+const { CategoryCreateDTO, UpdateCategoryDTO } = require('./category.validator');
 
 const categoryRouter = require('express').Router();
 
@@ -13,6 +13,9 @@ categoryRouter.route('/')
                 .get(categoryCtrl.listAllCategory)
 
 
-
+ categoryRouter.route("/:categoryId")               
+                .get(categoryCtrl.getCategoryById)
+                .put(auth(["admin"]), uploader().single("icon"), bodyValidator(UpdateCategoryDTO), categoryCtrl.updateCategory)
+                .delete(auth(["admin"]), categoryCtrl.removeCategory)
 
 module.exports = categoryRouter;

@@ -95,6 +95,30 @@ class CategoryService extends BaseService {
         throw exception;
     }
   }
+
+  transformUpdateCategory = async(req, oldData)=>{
+    try{
+        const data = req.data;
+        data.updatedBy = req.loggedInUser;
+        if(req.file){
+            data.icon = await cloudinarySvc.fileUpload(req.file.path, '/category/')
+        }else{
+            data.icon = oldData.icon
+        };
+
+        if(data.brand=== null || data.brand === ""){
+            data.brand = null
+        }
+
+        if(data.parentId=== null || data.parentId === ""){
+            data.parentId = null
+        }
+
+        return data;
+    }catch(exception){
+        throw exception;
+    }
+  }
 }
 
 const categorySvc = new CategoryService(categoryModel);

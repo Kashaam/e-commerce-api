@@ -88,7 +88,7 @@ class BrandController {
         }
       }
 
-      const payload = await brandSvc.transformCreateBrand(req, brand);
+      const payload = await brandSvc.transformUpdateBrand(req, brand);
       const updatedData = await brandSvc.updateSingleRowByFilter({_id: brand._id}, payload);
 
       res.json({
