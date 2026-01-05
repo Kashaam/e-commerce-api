@@ -37,6 +37,35 @@ class UserService {
     }
   }
 
+  getAllUser = async(query, filter = {})=>{
+    try{
+      const page = +query.page || 1;
+      const skip = +query.skip || 10;
+      const limit = (page -1) * limit;
+
+
+      const data = await this.find(filter)
+                  .sort({createdAt: "desc"})
+                  .page(page)
+                  .skip(skip)
+                  .limit(limit)
+
+      const countTotal = await userModel.countDocuments(filter);
+
+      return{
+        data: data.map((singleDetail)=>{this.publicUserProfile(singleDetail)}),
+        pagination: {
+          current: page,
+          limit: limit,
+          total: countTotal,
+          totalPage: Math.ceil(countTotal/limit)
+        }
+      }
+    }catch(exception){
+      next(exception);
+    }
+  }
+
 }
 
 const userSvc = new UserService();

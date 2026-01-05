@@ -1,4 +1,4 @@
-const { Roles } = require('../../config/constant.config');
+const { Roles, Status } = require('../../config/constant.config');
 const auth = require('../../middlewares/auth.middleware');
 const bodyValidator = require('../../middlewares/body-validator.middleware');
 const uploader = require('../../middlewares/uploader.middleware');
@@ -15,7 +15,7 @@ categoryRouter.route('/')
 
  categoryRouter.route("/:categoryId")               
                 .get(categoryCtrl.getCategoryById)
-                .put(auth(["admin"]), uploader().single("icon"), bodyValidator(UpdateCategoryDTO), categoryCtrl.updateCategory)
-                .delete(auth(["admin"]), categoryCtrl.removeCategory)
+                .put(auth([Roles.ADMIN]), uploader().single("icon"), bodyValidator(UpdateCategoryDTO), categoryCtrl.updateCategory)
+                .delete(auth([Roles.ADMIN]), categoryCtrl.removeCategory)
 
 module.exports = categoryRouter;
