@@ -1,6 +1,7 @@
 const authRouter = require('../module/auth/auth.router');
 const brandRouter = require('../module/brand/brand.router');
 const categoryRouter = require('../module/categories/category.router');
+const productRouter = require('../product/product.router');
 
 const router = require('express').Router();
 
@@ -22,5 +23,7 @@ router.use('/brand', brandRouter);
 
 // category route mounting
 router.use('/category', categoryRouter);
+
+router.use("/product", productRouter);
 
 module.exports = router;
