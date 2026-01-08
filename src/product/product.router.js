@@ -10,7 +10,8 @@ const productRouter = require('express').Router();
 
 
 
-productRouter.get('/get-all-products', productCtrl.getAllPublicProduct)
+productRouter.get('/get-all-products', productCtrl.getAllPublicProduct);
+productRouter.get('by-slug/:slug', productCtrl.getProductDetailWithProduct)
 
 
 

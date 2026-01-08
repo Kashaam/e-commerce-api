@@ -90,7 +90,7 @@ class ProductService extends BaseService {
             const skip = +query.skip || 10;
             const limit = (page-1) * skip;
 
-            const data = this.model.find(filter)
+            const data = await this.model.find(filter)
                         .populate("brand", ["_id", "name", "status", "slug", "logo"])
                         .populate("category", ["_id", "name", "status", "slug", "icon"])
                         .populate("createdBy", ["_id", "name", "email", "status", "image", "role"])

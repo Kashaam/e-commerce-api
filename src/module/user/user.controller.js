@@ -5,7 +5,7 @@ class UserController{
         try{
             const loggedInUser = req.loggedInUser;
             let filter = {
-                _id: {$ne: loggedInUser.id}
+                _id: {$ne: loggedInUser._id}
             };
 
             if(req.query.search){
@@ -45,5 +45,5 @@ class UserController{
 }
 
 
-const usserCtrl = new UserController();
-module.exports = UserController;
+const userCtrl = new UserController();
+module.exports = userCtrl;

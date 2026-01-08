@@ -196,6 +196,43 @@ class ProductController {
       next(exception);
     }
   };
+
+  getProductDetailWithProduct = async(req, res, nexr)=>{
+    try{
+      const slug = req.params.slug;
+      const detail = await productSvc.getSingleRowByFilter({slug: slug});
+
+      if(!detail){
+        throw{
+          code: 422,
+          message: "Product not found",
+          status: "PRODUCT_NOT_FOUND"
+        }
+      }
+
+      const relatedProduct = await productSvc.listAllProducts({
+        page: 1,
+        limit: 10
+      },
+        {
+        category: {$n: detail.category((cat)=>{cat._id})},
+        _id: {$ne: detail._id}
+      })
+
+      res.json({
+        data: {
+          productDetail: detail,
+          product: relatedProduct
+        },
+        message: "Product fetched with slug",
+        status: "PRODUCT_FETCHED_SUCCESS_USING_SLUG",
+        options: null
+      })
+
+    }catch(exception){
+      next(exception);
+    }
+  }
 }
 
 const productCtrl = new ProductController();
