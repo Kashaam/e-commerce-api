@@ -27,6 +27,6 @@ router.use('/category', categoryRouter);
 
 router.use("/product", productRouter);
 
-// router.use('/user', userRouter);
+router.use('/user', userRouter);
 
 module.exports = router;

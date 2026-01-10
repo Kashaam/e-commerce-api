@@ -37,23 +37,22 @@ class UserService {
     }
   }
 
-  getAllUser = async(query, filter = {})=>{
+  getAllUser = async(filter, query)=>{
     try{
       const page = +query.page || 1;
-      const skip = +query.skip || 10;
-      const limit = (page -1) * limit;
+      const limit = +query.limit || 10;
+      const skip = (page -1) * limit;
 
 
-      const data = await this.find(filter)
-                  .sort({createdAt: "desc"})
-                  .page(page)
+      const data = await userModel.find(filter)
+                  .sort({name: "desc"})
                   .skip(skip)
                   .limit(limit)
 
       const countTotal = await userModel.countDocuments(filter);
 
       return{
-        data: data.map((singleDetail)=>{this.publicUserProfile(singleDetail)}),
+        data: data.map((singleDetail)=>{return this.publicUserProfile(singleDetail)}),
         pagination: {
           current: page,
           limit: limit,
@@ -62,7 +61,7 @@ class UserService {
         }
       }
     }catch(exception){
-      next(exception);
+      throw(exception);
     }
   }
 

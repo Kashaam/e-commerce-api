@@ -7,7 +7,7 @@ const { Roles } = require("../config/constant.config");
 const auth = (role = null) => {
   return async (req, res, next) => {
     try {
-      let token = req.headers.authorization;
+      let token = req.headers.authorization || null;
       if (!token) {
         throw {
           code: 402,

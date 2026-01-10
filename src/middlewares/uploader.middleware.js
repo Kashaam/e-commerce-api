@@ -22,7 +22,7 @@ const uploader = (type = "image") => {
   const uploadConfig = {
     fileSize: 3000000,
     fileFilter: function (req, file, cb) {
-      let allowedExt = ["jpg", "jpeg", "png", "gif", "svg", "bmp", "webp"];
+      let allowedExt = ["jpg", "jpeg", "png", "gif", "svg", "bmp", "webp", "webp"];
       if (type === "doc") {
         this.fileSize = 5000000;
         allowedExt = ["doc", "pdf", "docx", "csv", "json"];

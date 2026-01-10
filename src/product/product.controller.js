@@ -210,19 +210,19 @@ class ProductController {
         }
       }
 
-      const relatedProduct = await productSvc.listAllProducts({
+      const {data: relatedProduct} = await productSvc.listAllProducts({
         page: 1,
         limit: 10
       },
         {
-        category: {$n: detail.category((cat)=>{cat._id})},
+        category: {$in: detail.category((cat)=>{cat._id})},
         _id: {$ne: detail._id}
       })
 
       res.json({
         data: {
           productDetail: detail,
-          product: relatedProduct
+          relatedProduct: relatedProduct
         },
         message: "Product fetched with slug",
         status: "PRODUCT_FETCHED_SUCCESS_USING_SLUG",

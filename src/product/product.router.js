@@ -16,13 +16,13 @@ productRouter.get('by-slug/:slug', productCtrl.getProductDetailWithProduct)
 
 
 productRouter.route("/")
-            .post(auth([Roles.SELLER, Roles.ADMIN]), uploader().array('image'), bodyValidator(CreateProductDTO), productCtrl.registerProduct)
+            .post(auth([Roles.SELLER, Roles.ADMIN]), uploader().array('images'), bodyValidator(CreateProductDTO), productCtrl.registerProduct)
             .get(productCtrl.listProducts)
 
 
 productRouter.route("/:productId")
             .get(productCtrl.getProductByUd)
-            .put(auth([Roles.SELLER, Roles.ADMIN]), uploader().array('image'), bodyValidator(UpdateProductDTO), productCtrl.updateProductById)
+            .put(auth([Roles.SELLER, Roles.ADMIN]), uploader().array('images'), bodyValidator(UpdateProductDTO), productCtrl.updateProductById)
             .delete(auth([Roles.ADMIN, Roles.SELLER]), productCtrl.deleteProductById)
 
 module.exports = productRouter;

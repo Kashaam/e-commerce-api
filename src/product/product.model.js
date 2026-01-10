@@ -6,7 +6,7 @@ const ProductSchema = new mongoose.Schema(
     name: {
       type: String,
       min: 2,
-      max: 100,
+      max: 200,
       required: true,
     },
     price: {
@@ -76,13 +76,13 @@ const ProductSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    attribute: [
+    attributes: [
       {
         key: String,
         value: [String],
       },
     ],
-    image: [
+    images: [
       {
         publicId: String,
         secureUrl: String,

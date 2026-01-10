@@ -9,7 +9,7 @@ class CategoryService extends BaseService {
       const data = req.body;
       data.createdBy = req.loggedInUser;
       if (req.file) {
-        data.icon = await cloudinarySvc.fileUpload(req.file.path, "category");
+        data.icon = await cloudinarySvc.fileUpload(req.file.path, "/category");
       }
 
       if(data.parentId === "" || data.parentId === null){
