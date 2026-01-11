@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Status } = require("../config/constant.config");
+const { Status } = require("../../config/constant.config");
 
 const ProductSchema = new mongoose.Schema(
   {

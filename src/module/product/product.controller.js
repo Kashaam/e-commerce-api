@@ -1,4 +1,4 @@
-const { Roles, Status } = require("../config/constant.config");
+const { Roles, Status } = require("../../config/constant.config");
 const productSvc = require("./product.service");
 
 class ProductController {

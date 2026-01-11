@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const { Status } = require('../config/constant.config')
+const { Status } = require('../../config/constant.config')
 
 const CreateProductDTO = Joi.object({
     name: Joi.string().min(2).max(200).required(),

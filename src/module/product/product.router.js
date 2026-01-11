@@ -1,9 +1,9 @@
-const { Roles } = require('../config/constant.config');
+const { Roles } = require('../../config/constant.config');
 const productCtrl = require('./product.controller');
-const bodyValidator = require('../middlewares/body-validator.middleware');
+const bodyValidator = require('../../middlewares/body-validator.middleware');
 const { CreateProductDTO, UpdateProductDTO } = require('./product.validator');
-const auth = require('../middlewares/auth.middleware');
-const uploader = require('../middlewares/uploader.middleware');
+const auth = require('../../middlewares/auth.middleware');
+const uploader = require('../../middlewares/uploader.middleware');
 
 
 const productRouter = require('express').Router();

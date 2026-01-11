@@ -16,8 +16,19 @@ const Gender = {
     OTHER: "other"
 }
 
+const OREDR_STATUS = {
+    CART: "cart",
+    PENDING: "pending",
+    VERIFIED: "verified",
+    CANCLLED: "canclded",
+    PROCESSING: "processing",
+    DELIVERED: "delivered"
+
+}
+
 module.exports = {
     Status,
     Roles,
-    Gender
+    Gender,
+    OREDR_STATUS
 }

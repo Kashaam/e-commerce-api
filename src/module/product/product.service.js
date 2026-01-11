@@ -1,10 +1,10 @@
 const slugify = require("slugify");
-const cloudinarySvc = require("../services/cloudinary.service");
-const { randomStringGenerator } = require("../utilities/helper");
-const BaseService = require("../services/base.service");
+const cloudinarySvc = require("../../services/cloudinary.service");
+const { randomStringGenerator } = require("../../utilities/helper");
+const BaseService = require("../../services/base.service");
 const productModel = require("./product.model");
-const categorySvc = require("../module/categories/category.service");
-const userSvc = require("../module/user/user.service");
+const categorySvc = require("../categories/category.service");
+const userSvc = require("../user/user.service");
 
 class ProductService extends BaseService {
   async transformCreateProduct(req) {

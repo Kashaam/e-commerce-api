@@ -1,5 +1,6 @@
 const express = require('express');
 const router = require('./router.config');
+const { deleteFile } = require('../utilities/helper');
 
 require('./mongodb.config');
 
@@ -23,6 +24,14 @@ app.use((err, req, res, next)=>{
     let detail = err.detail || null;
 
 
+   
+    if(req.file){
+        deleteFile(req.file.path);
+    }else if(req.files){
+        req.files.map((file)=>{
+            deleteFile(file.path);
+        })
+    }
 
 
     res.status(code).json({
