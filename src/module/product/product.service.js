@@ -5,6 +5,7 @@ const BaseService = require("../../services/base.service");
 const productModel = require("./product.model");
 const categorySvc = require("../categories/category.service");
 const userSvc = require("../user/user.service");
+const brandSvc = require("../brand/brand.service");
 
 class ProductService extends BaseService {
   async transformCreateProduct(req) {
@@ -93,30 +94,16 @@ class ProductService extends BaseService {
   listAllProducts = async (query, filter = {}) => {
     try {
       const page = +query.page || 1;
-      const skip = +query.skip || 10;
-      const limit = (page - 1) * skip;
+      const limit = +query.limit || 10;
+      const skip = (page - 1) * limit;
 
       const data = await this.model
         .find(filter)
         .populate("brand", ["_id", "name", "status", "slug", "logo"])
         .populate("category", ["_id", "name", "status", "slug", "icon"])
-        .populate("createdBy", [
-          "_id",
-          "name",
-          "email",
-          "status",
-          "image",
-          "role",
-        ])
+        .populate("createdBy", [ "_id", "name", "email", "status", "image", "role", ])
         .populate("seller", ["_id", "name", "email", "status", "image", "role"])
-        .populate("updatedBy", [
-          "_id",
-          "name",
-          "email",
-          "status",
-          "image",
-          "role",
-        ])
+        .populate("updatedBy", [ "_id", "name", "email", "status", "image", "role", ])
         .sort({ createdAt: "desc" })
         .limit(limit)
         .skip(skip);

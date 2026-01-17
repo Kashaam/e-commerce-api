@@ -1,6 +1,7 @@
 const authRouter = require('../module/auth/auth.router');
 const brandRouter = require('../module/brand/brand.router');
 const categoryRouter = require('../module/categories/category.router');
+const orderRouter = require('../module/order/order.router');
 const productRouter = require('../module/product/product.router');
 const userRouter = require('../module/user/user.router');
 
@@ -29,5 +30,11 @@ router.use('/category', categoryRouter);
 router.use("/product", productRouter);
 
 router.use('/user', userRouter);
+
+
+// order and orderDetail router mounting
+router.use('/order', orderRouter)
+
+
 
 module.exports = router;

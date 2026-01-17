@@ -1,4 +1,7 @@
 const express = require('express');
+const {authenticateSql} = require('./sql.config')
+authenticateSql();
+
 const router = require('./router.config');
 const { deleteFile } = require('../utilities/helper');
 

@@ -79,8 +79,8 @@ class ProductController {
             filter = {
                 ...filter,
                 $or: [
-                    {name: new RegExp(req.params.search, 'i')},
-                    {description: new RegExp(req.params.search, 'i')}
+                    {name: new RegExp(req.query.search, 'i')},
+                    {description: new RegExp(req.query.search, 'i')}
                 ]
             }
         }

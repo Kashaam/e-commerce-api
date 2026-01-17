@@ -22,8 +22,20 @@ const AppConfig = {
     jwt_secret: process.env.JWT_SECRET
 }
 
+
+const SQL_CONFIG = {
+    dialect: process.env.SQL_DIALECT,
+    user: process.env.SQL_USER,
+    pwd: process.env.SQL_PWD,
+    host: process.env.SQL_HOST,
+    port: process.env.SQL_PORT,
+    dbname: process.env.SQL_DB_NAME
+
+}
+
 module.exports = {
     MailConfig,
     DbConfig,
-    AppConfig
+    AppConfig,
+    SQL_CONFIG
 }
