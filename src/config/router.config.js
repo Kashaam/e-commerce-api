@@ -1,4 +1,5 @@
 const authRouter = require('../module/auth/auth.router');
+const bannerRouter = require('../module/banner/banner.router');
 const brandRouter = require('../module/brand/brand.router');
 const categoryRouter = require('../module/categories/category.router');
 const orderRouter = require('../module/order/order.router');
@@ -36,5 +37,8 @@ router.use('/user', userRouter);
 router.use('/order', orderRouter)
 
 
+
+//banner router mounting
+router.use('/banner', bannerRouter);
 
 module.exports = router;
