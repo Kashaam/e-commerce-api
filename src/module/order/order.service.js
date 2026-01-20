@@ -14,8 +14,7 @@ class OrderService {
     };
 
     cartInfo.map((item) => {
-      calculationValues.grossTotal +=
-        item.product.afterDiscount + item.quantity;
+      calculationValues.grossTotal += item.product.afterDiscount + item.quantity;
       calculationValues.deliveryCharge += item.deliveryCharge;
     });
     //discount is appplied only once

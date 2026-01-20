@@ -85,7 +85,7 @@ class OrderDetailService {
         item.order = order._id;
         item.price = item.product.afterDiscount;
         item.subTotal = item.product.afterDiscount * item.quantity;
-        cartItem.total = item.subTotal + item.deliveryCharge;
+        item.total = item.subTotal + item.deliveryCharge;
         item.status = OREDR_STATUS.VERIFIED;
 
 
