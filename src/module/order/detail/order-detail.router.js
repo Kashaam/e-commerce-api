@@ -11,7 +11,7 @@ const orderDetailRouter = require('express').Router();
 
 orderDetailRouter.post("/add", auth([Roles.ADMIN, Roles.CUSTOMER]), bodyValidator(AddToCartDTO), orderDetailCtrl.addToCart)
 orderDetailRouter.get('/view', auth([Roles.ADMIN, Roles.CUSTOMER]), orderDetailCtrl.viewMyCart);
-orderDetailRouter.post('/remmove', auth([Roles.ADMIN, Roles.CUSTOMER]), orderDetailCtrl.removeFromCart);
+orderDetailRouter.post('/remove', auth([Roles.ADMIN, Roles.CUSTOMER]), orderDetailCtrl.removeFromCart);
 
 
 

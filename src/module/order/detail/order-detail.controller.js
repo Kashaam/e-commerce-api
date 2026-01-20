@@ -54,13 +54,13 @@ class OrderDetailController {
             status: "PRODUCT_STOCK_NOT_SUFFICIENT",
           };
         }
-        const cartItem = await orderDetailSvc.transformToCartitem({
+        const cartItem = orderDetailSvc.transformToCartitem({
           productDetail,
           quantity,
           loggedInUser,
         });
 
-        currentCart = await orderDetailSvc.addToCart(cartItem);
+        currentCart = await orderDetailSvc.addItemsToCart(cartItem);
       }
 
       res.json({

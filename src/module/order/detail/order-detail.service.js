@@ -27,7 +27,7 @@ class OrderDetailService {
   };
 
   
-  addToCart = async (cartItem) => {
+  addItemsToCart = async (cartItem) => {
     try {
       const response = orderDetailModel(cartItem);
       return await response.save();
@@ -74,6 +74,58 @@ class OrderDetailService {
         },
       };
     } catch (exception) {
+      throw exception;
+    }
+  }
+
+  convertToOrder = async(order, cartInfo)=>{
+    try{
+      const updateInfo = [];
+      cartInfo.map((item)=>{
+        item.order = order._id;
+        item.price = item.product.afterDiscount;
+        item.subTotal = item.product.afterDiscount * item.quantity;
+        cartItem.total = item.subTotal + item.deliveryCharge;
+        item.status = OREDR_STATUS.VERIFIED;
+
+
+        updateInfo.push(item.save());
+
+      })
+
+      const responseStatus = await Promise.allSettled(updateInfo);
+
+      let returnOrderDetails = [];
+      responseStatus.forEach((item)=>{
+        if(item.status === "fulfilled"){
+          returnOrderDetails.push(item.value);
+        }
+      })
+    }catch(exception){
+      throw exception;
+    }
+
+  }
+
+  reduceStock = async(cartInfo)=>{
+    try{
+      let products = [];
+      cartInfo.map((item)=>{
+        item.product.stock= item.product.stock - item.quantity
+        products.push(item.product.save())
+
+      })
+
+      const response = await Promise.allSettled(products);
+      let data = [];
+      response.map((successResponse)=>{
+        if(successResponse.status === "fulfilled"){
+          data.push(successResponse.value)
+        }
+      })
+
+      return data;
+    }catch(exception){
       throw exception;
     }
   }
