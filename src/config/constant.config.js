@@ -26,9 +26,27 @@ const OREDR_STATUS = {
 
 }
 
+const Payment_Method = {
+    COD: "cod",
+    ESEWA: "esewa",
+    KHALTI: "khalti",
+    IPS: "connectips",
+    BANK: "bank"
+
+}
+
+
+const Payment_Status = {
+    PENDIND: "pending",
+    PAID: "paid",
+    REFUND: "refund"
+}
+
 module.exports = {
     Status,
     Roles,
     Gender,
-    OREDR_STATUS
+    OREDR_STATUS,
+    Payment_Method,
+    Payment_Status
 }

@@ -111,7 +111,7 @@ class OrderDetailService {
     try{
       let products = [];
       cartInfo.map((item)=>{
-        item.product.stock= item.product.stock - item.quantity
+        item.product.stock = item.product.stock - item.quantity
         products.push(item.product.save())
 
       })

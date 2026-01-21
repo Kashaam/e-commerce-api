@@ -17,7 +17,7 @@ const OrderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    dicsounts: {
+    discounts: {
       type: Number,
       default: 0,
     },
