@@ -2,7 +2,7 @@ const { Roles } = require('../../../config/constant.config');
 const auth = require('../../../middlewares/auth.middleware');
 const bodyValidator = require('../../../middlewares/body-validator.middleware');
 const orderDetailCtrl = require('./order-detail.controller');
-const { AddToCartDTO } = require('./order-detail.validator');
+const { AddToCartDTO, RemoveFromCartDTO } = require('./order-detail.validator');
 
 const orderDetailRouter = require('express').Router();
 
@@ -11,7 +11,7 @@ const orderDetailRouter = require('express').Router();
 
 orderDetailRouter.post("/add", auth([Roles.ADMIN, Roles.CUSTOMER]), bodyValidator(AddToCartDTO), orderDetailCtrl.addToCart)
 orderDetailRouter.get('/view', auth([Roles.ADMIN, Roles.CUSTOMER]), orderDetailCtrl.viewMyCart);
-orderDetailRouter.post('/remove', auth([Roles.ADMIN, Roles.CUSTOMER]), orderDetailCtrl.removeFromCart);
+orderDetailRouter.post('/remove', auth([Roles.ADMIN, Roles.CUSTOMER]), bodyValidator(RemoveFromCartDTO), orderDetailCtrl.removeFromCart);
 
 
 

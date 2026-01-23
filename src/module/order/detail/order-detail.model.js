@@ -6,14 +6,14 @@ const OrderDetailSchema = new mongoose.Schema(
     order: {
       type: mongoose.Types.ObjectId,
       ref: "Order",
-      required: true,
+      default: null,
     },
     buyer: {
       type: mongoose.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    selller: {
+    seller: {
       type: mongoose.Types.ObjectId,
       ref: "User",
       required: true,
@@ -42,8 +42,7 @@ const OrderDetailSchema = new mongoose.Schema(
     },
     deliveryCharge: {
       type: Number,
-      required: true,
-      min: 10000,
+      default: 100,
     },
     status: {
       type: String,
@@ -65,10 +64,8 @@ const OrderDetailSchema = new mongoose.Schema(
     timestamps: true,
     autoIndex: true,
     autoCreate: true,
-  }
+  },
 );
-
-
 
 const orderDetailModel = mongoose.model("OrderDetail", OrderDetailSchema);
 module.exports = orderDetailModel;

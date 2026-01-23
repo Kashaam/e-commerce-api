@@ -12,7 +12,7 @@ class OrderDetailService {
       subTotal: productDetail.afterDiscount * quantity,
       total: productDetail.afterDiscount * quantity + 10000, //delivery charge Rs.100
       status: OREDR_STATUS.PENDING,
-      seller: loggedInUser.seller?._id,
+      seller: productDetail.seller?._id,
       createdBy: loggedInUser._id,
     };
   };
@@ -53,7 +53,7 @@ class OrderDetailService {
 
       const data = await orderDetailModel
         .find(filter)
-        .populate("order", [ "_id", "code", "subTotal", "total", "status", "isPaid", ])
+        // .populate("order", [ "_id", "code", "subTotal", "total", "status", "isPaid", ])
         .populate("buyer", [ "_id", "name", "email", "address",  "status", "role",  "image", "createdAt", "updatedAt", ])
         .populate("seller", [ "_id", "name", "email", "address", "image", "role", "status", "createdAt", "updatedAt", ])
         .populate("createdBy", [ "_id", "name", "status", "image", "email", "address", "phone", ])
@@ -101,6 +101,7 @@ class OrderDetailService {
           returnOrderDetails.push(item.value);
         }
       })
+      return returnOrderDetails;
     }catch(exception){
       throw exception;
     }

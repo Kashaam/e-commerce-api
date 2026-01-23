@@ -25,9 +25,8 @@ class OrderDetailController {
         product: productId,
       };
 
-      const existingCart = await orderDetailSvc.getSingleRowByFilter(
-        cartFilter
-      );
+      const existingCart =
+        await orderDetailSvc.getSingleRowByFilter(cartFilter);
 
       let currentCart = [];
       if (existingCart) {
@@ -96,7 +95,8 @@ class OrderDetailController {
         buyer: loggedInUser._id,
       };
 
-      const existingCart = await productSvc.getSingleRowByFilter(cartFilter);
+      const existingCart =
+        await orderDetailSvc.getSingleRowByFilter(cartFilter);
 
       let currentCart = null;
 
@@ -114,60 +114,56 @@ class OrderDetailController {
           message: "Quantity exceed than existing quantity",
           status: "QUANTITY_EXCEEDED",
         };
-      }else if(+existingCart.quantity === +quantity || quantity === 0){
+      } else if (+existingCart.quantity === +quantity || quantity === 0) {
         currentCart = await orderDetailSvc.removeFromCartByFilter({
-            _id: existingCart._id
-        })
-      }else{
+          _id: existingCart._id,
+        });
+      } else {
         existingCart.quantity = +existingCart.quantity - +quantity;
         existingCart.price = productDetail.afterDiscount;
-        existingCart.subTotal = productDetail.afterDiscount * existingCart,quantity;
-        existingCart.total = existingCart.subTotal + existingCart.deliveryCharge;
+        existingCart.subTotal =
+          productDetail.afterDiscount * existingCart.quantity;
+        existingCart.total =
+          existingCart.subTotal + existingCart.deliveryCharge;
 
         currentCart = await existingCart.save();
-      };
-
+      }
 
       res.json({
         data: currentCart,
         message: "Remove items successfully",
         status: "ITEMS_REMOVED_SUCCESS",
-        options: null
-      })
-
+        options: null,
+      });
     } catch (exception) {
       next(exception);
     }
   };
 
+  viewMyCart = async (req, res, next) => {
+    try {
+      const loggedInUser = req.loggedInUser;
 
-  viewMyCart = async(req, res, next)=>{
-    try{
-        const loggedInUser = req.loggedInUser;
+      const cartFilter = {
+        order: { $eq: null },
+        buyer: loggedInUser._id,
+      };
 
-        const cartFilter = {
-            order: {$eq: null},
-            buyer: loggedInUser._id
-        };
+      const { cart, pagination } = await orderDetailSvc.getAllRowByFilter(
+        cartFilter,
+        req.query,
+      );
 
-        const {cart, pagination} = await orderDetailSvc.getAllRowByFilter(
-            cartFilter,
-            req.query
-        );
-
-        res.json({
-            message: cart,
-            message: "Cart listed success",
-            status: "CART_LIST_FETCHED_SUCCESS",
-            options: pagination
-        })
-    }catch(exception){
-        next(exception);
+      res.json({
+        data: cart,
+        message: "Cart listed success",
+        status: "CART_LIST_FETCHED_SUCCESS",
+        options: pagination,
+      });
+    } catch (exception) {
+      next(exception);
     }
-  }
-
-
-  
+  };
 }
 
 const orderDetailCtrl = new OrderDetailController();

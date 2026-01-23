@@ -5,6 +5,8 @@ const OrderSchema = new mongoose.Schema(
   {
     code: {
       type: Number,
+      min: 10,
+      max: 15,
       unique: true,
       required: true,
     },
@@ -23,13 +25,11 @@ const OrderSchema = new mongoose.Schema(
     },
     deliveryCharge: {
       type: Number,
-      optional: true,
-      default: true,
+      default: 0,
     },
     serviceCharge: {
       type: Number,
-      optional: true,
-      default: true,
+      default: 10000,
     },
     subTotal: {
       type: Number,
@@ -41,7 +41,7 @@ const OrderSchema = new mongoose.Schema(
       required: true,
     },
     status: {
-      type: string,
+      type: String,
       enum: Object.values(OREDR_STATUS),
       default: OREDR_STATUS.PENDING,
     },

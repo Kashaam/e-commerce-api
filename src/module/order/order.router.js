@@ -14,7 +14,7 @@ orderRouter.use('/detail', orderDetailRouter);
 
 
 
-orderRouter.get('/checkout', auth([Roles.ADMIN, Roles.CUSTOMER]), bodyValidator(CheckOutDTO), oredrCtrl.checkOut);
+orderRouter.post('/checkout', auth([Roles.ADMIN, Roles.CUSTOMER]), bodyValidator(CheckOutDTO), oredrCtrl.checkOut);
 
 
 

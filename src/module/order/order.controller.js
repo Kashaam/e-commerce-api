@@ -1,5 +1,3 @@
-const { OREDR_STATUS } = require("../../config/constant.config");
-const { randomStringGenerator } = require("../../utilities/helper");
 const orderDetailSvc = require("./detail/order-detail.service");
 const orderNtfy = require("./order.mail");
 const orderSvc = require("./order.service");
@@ -13,7 +11,7 @@ class OrderController {
 
       //to check unique cartId
       let newCartId = [];
-      new Set(cartId).forEach((item) => newCartId.push(item));
+      (new Set(cartId)).forEach((item) => newCartId.push(item));
 
       const { cart: cartInfo } = await orderDetailSvc.getAllRowByFilter(
         {
