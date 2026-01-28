@@ -62,7 +62,7 @@ const UpdateUserDTO = Joi.object({
 
 const ResetPasswordDTO = Joi.object({
   password: Joi.string()
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&+<>?*`@]).{8,25}/)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&+<>?*`@]).{8,25}$/)
     .required()
     .messages({
       "string.pattern.base":

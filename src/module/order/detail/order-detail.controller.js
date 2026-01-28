@@ -151,7 +151,7 @@ class OrderDetailController {
 
       const { cart, pagination } = await orderDetailSvc.getAllRowByFilter(
         cartFilter,
-        req.query,
+        req.query
       );
 
       res.json({

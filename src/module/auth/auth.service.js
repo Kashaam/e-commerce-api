@@ -6,6 +6,7 @@ const userModel = require("../user/user.model");
 const cloudinarySvc = require("../../services/cloudinary.service");
 const authModel = require("./auth.model");
 const userSvc = require("../user/user.service");
+const { AppConfig } = require("../../config/config");
 
 class AuthService {
   createTransformUser = async (req) => {
@@ -67,10 +68,7 @@ class AuthService {
                 <div style="text-align:center;margin:18px 0;">
                   <a href="${
                     user.activationLink ||
-                    `${
-                      process.env.FRONTEND_URL || "https://example.com"
-                    }/activate/${user.activationToken || ""}`
-                  }" style="display:inline-block;padding:12px 20px;background:#0b74de;color:#ffffff;border-radius:6px;text-decoration:none;font-weight:600;">
+                    `${AppConfig.frontend_url}/activate/${user.activationToken}`}" style="display:inline-block;padding:12px 20px;background:#0b74de;color:#ffffff;border-radius:6px;text-decoration:none;font-weight:600;">
                     Activate account
                   </a>
                 </div>

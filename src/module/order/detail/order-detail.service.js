@@ -2,7 +2,7 @@ const { OREDR_STATUS } = require("../../../config/constant.config");
 const orderDetailModel = require("./order-detail.model");
 
 class OrderDetailService {
-  transformToCartitem = ({ productDetail, quantity, loggedInUser }) => {
+  transformToCartitem  ({ productDetail, quantity, loggedInUser }) {
     return {
       order: null,
       product: productDetail._id,
@@ -29,7 +29,7 @@ class OrderDetailService {
   
   addItemsToCart = async (cartItem) => {
     try {
-      const response = orderDetailModel(cartItem);
+      const response = new orderDetailModel(cartItem);
       return await response.save();
     } catch (exception) {
       throw exception;
@@ -53,10 +53,11 @@ class OrderDetailService {
 
       const data = await orderDetailModel
         .find(filter)
-        // .populate("order", [ "_id", "code", "subTotal", "total", "status", "isPaid", ])
+        .populate("order", [ "_id", "code", "subTotal", "total", "status", "isPaid"])
         .populate("buyer", [ "_id", "name", "email", "address",  "status", "role",  "image", "createdAt", "updatedAt", ])
         .populate("seller", [ "_id", "name", "email", "address", "image", "role", "status", "createdAt", "updatedAt", ])
         .populate("createdBy", [ "_id", "name", "status", "image", "email", "address", "phone", ])
+        .populate("updatedBy", [ "_id", "name", "status", "image", "email", "address", "phone", ])
         .populate("product", [ "_id", "name", "slug", "afterDiscount", "discount", "category", "brand", "seller", "status", ])
         .sort({ createdAt: "desc" })
         .limit(limit)
@@ -67,8 +68,8 @@ class OrderDetailService {
       return {
         cart: data,
         pagination: {
-          page: page,
-          limit: limit,
+          page: +page,
+          limit: +limit,
           total: totalCount,
           totalPage: Math.ceil(totalCount / limit),
         },

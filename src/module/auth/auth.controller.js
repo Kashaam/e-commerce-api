@@ -14,7 +14,7 @@ class AuthController {
       await authSvc.sendUserRegisterNotification(userData);
       res.json({
         data: userSvc.publicUserProfile(userData),
-        message: "User registered successfully",
+        message: "Thank you for registering. You have reecived an email to activate your account. Please activate your acccount from mail",
         status: "USER_REGISTERED_SUCCESS",
       });
     } catch (exception) {

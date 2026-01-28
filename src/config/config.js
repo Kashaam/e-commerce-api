@@ -19,7 +19,8 @@ const AppConfig = {
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_secret: process.env.CLOUDINARY_API_SECRET,
     api_key: process.env.CLOUDINARY_API_KEY,
-    jwt_secret: process.env.JWT_SECRET
+    jwt_secret: process.env.JWT_SECRET,
+    frontend_url: process.env.FRONTEND_URL
 }
 
 

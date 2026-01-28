@@ -10,7 +10,7 @@ const AddToCartDTO = Joi.object({
 
 const RemoveFromCartDTO = Joi.object({
     productId: Joi.string().required(),
-    quantity: Joi.number().min(1).max(5).required()
+    quantity: Joi.number().min(0).max(5).required()
 
 });
 
